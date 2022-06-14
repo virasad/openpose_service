@@ -50,7 +50,7 @@ The important frameworks/libraries used in this project are listed below.
     ```sh
     cd openpose_service
     ```
-Please copy pretrained model's of hand and body from [body link](https://drive.google.com/file/d/1EULkcH_hhSU28qVc1jSJpCh2hGOrzpjK/view?usp=sharing) and [hand link](https://drive.google.com/file/d/1yVyIsOD32Mq28EHrVVlZbISDN7Icgaxw/view?usp=sharing) and copy them to the model directory.
+Please copy pretrained model's of hand and body from [body link](https://drive.google.com/file/d/1ZH6eN9bO-IYAYv9XUyhOJ93u2rTKeXIM/view?usp=sharing) and [hand link](https://drive.google.com/file/d/1-hkvezkgkh_ZYRz-SN5mlQqAs65WZW9N/view?usp=sharingg) and copy them to the model directory.
 
 # **Inference**
 
