@@ -150,7 +150,7 @@ def handDetect(candidate, subset, oriImg):
     ratioWristElbow = 0.33
     detect_result = []
     image_height, image_width = oriImg.shape[0:2]
-    for person in subset.astype(int):
+    for person_id, person in enumerate(subset.astype(int)):
         # if any of three not detected
         has_left = np.sum(person[[5, 6, 7]] == -1) == 0
         has_right = np.sum(person[[2, 3, 4]] == -1) == 0
@@ -164,7 +164,7 @@ def handDetect(candidate, subset, oriImg):
             x1, y1 = candidate[left_shoulder_index][:2]
             x2, y2 = candidate[left_elbow_index][:2]
             x3, y3 = candidate[left_wrist_index][:2]
-            hands.append([x1, y1, x2, y2, x3, y3, True])
+            hands.append([person_id, x1, y1, x2, y2, x3, y3, True])
         # right hand
         if has_right:
             right_shoulder_index, right_elbow_index, right_wrist_index = person[[
@@ -172,9 +172,9 @@ def handDetect(candidate, subset, oriImg):
             x1, y1 = candidate[right_shoulder_index][:2]
             x2, y2 = candidate[right_elbow_index][:2]
             x3, y3 = candidate[right_wrist_index][:2]
-            hands.append([x1, y1, x2, y2, x3, y3, False])
+            hands.append([person_id, x1, y1, x2, y2, x3, y3, False])
 
-        for x1, y1, x2, y2, x3, y3, is_left in hands:
+        for person_id, x1, y1, x2, y2, x3, y3, is_left in hands:
             # pos_hand = pos_wrist + ratio * (pos_wrist - pos_elbox) = (1 + ratio) * pos_wrist - ratio * pos_elbox
             # handRectangle.x = posePtr[wrist*3] + ratioWristElbow * (posePtr[wrist*3] - posePtr[elbow*3]);
             # handRectangle.y = posePtr[wrist*3+1] + ratioWristElbow * (posePtr[wrist*3+1] - posePtr[elbow*3+1]);
@@ -205,7 +205,7 @@ def handDetect(candidate, subset, oriImg):
             width = min(width1, width2)
             # the max hand box value is 20 pixels
             if width >= 20:
-                detect_result.append([int(x), int(y), int(width), is_left])
+                detect_result.append([int(x), int(y), int(width), is_left , person_id])
 
     '''
     return value: [[x, y, w, True if left hand else False]].
