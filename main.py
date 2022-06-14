@@ -12,6 +12,8 @@ from src.hand import Hand
 
 body_estimation = Body('model/body_pose_model.pth')
 hand_estimation = Hand('model/hand_pose_model.pth')
+
+
 def infer(image):
     """
     Infer the pose of the image.
@@ -36,7 +38,9 @@ def infer(image):
                       if len(all_hand_peaks[i]) > 0]
     return canvas, body_coor_person, all_hand_peaks
 
+
 app = FastAPI(title="Pose Estimation", version="0.8")
+
 
 @app.post("/inference")
 async def inference(image: UploadFile = File(...), img_show: bool = True,
