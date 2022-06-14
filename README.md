@@ -62,7 +62,7 @@ In this section we will describe how to perform inference directly. For using fa
 
     Please as first step create a virtual environment. (as an example you can use conda command as follow)
     ```sh
-    conda create -n venv_name python=3.7
+    conda create -n venv_name python
     ```
   Note that venv_name would be your virtual environment name.
 
