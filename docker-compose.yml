@@ -4,7 +4,7 @@ services:
     image: openpose_fastapi
     build:
           context: ./
-          dockerfile: Dockerfile-gpu
+          dockerfile: Dockerfile
     container_name: pose_api
     ports:
       - "8000:8000"
