@@ -5,7 +5,7 @@ import cv2
 import numpy as np
 from starlette.responses import StreamingResponse
 from fastapi import FastAPI, File, UploadFile
-from fastapi.responses import RedirectResponse
+import uvicorn
 from src import util
 from src.body import Body
 from src.hand import Hand
@@ -45,21 +45,30 @@ def infer(image):
 app = FastAPI(title="Pose Estimation", version="0.8")
 
 
+@app.get("/")
+def root():
+    return {"message": "Hello World"}
+
+
 @app.post("/inference")
-async def inference(image: UploadFile = File(...), img_show: bool = False, keypoints: bool = True):
+async def inference(image: UploadFile = File(...), show_result_img: bool = False, keypoints: bool = True):
     """
     Return the pose of an image."""
     contents = await image.read()
-    image.__sizeof__
     nparr = np.fromstring(contents, np.uint8)
     canvas, body_keypoints, hand_keypoints, num_bodies, hands_id = infer(nparr)
-    _, encoded_img = cv2.imencode('.PNG', canvas)
-    encoded_img = base64.b64encode(encoded_img)
+    _, encoded_img = cv2.imencode('.JPG', canvas)
+    encoded_img_b64 = base64.b64encode(encoded_img)
     if keypoints:
         return {'joints_name': joints_name,
                 'output_image': [{'image_size': {'width': canvas.shape[1], 'height': canvas.shape[0]}, 'num_bodies': num_bodies,
                                   'bodies': [{'body_id': i, 'joint_XYposition': body_keypoints[i]} for i in range(num_bodies)],
                                  'hands': [{'hand_id': hands_id[i][1], 'hand_type': hands_id[i][0], 'joint_XYposition': hand_keypoints[i]}
-                                           for i in range(len(hand_keypoints))]}], 'image': encoded_img}
+                                           for i in range(len(hand_keypoints))]}], 'image': encoded_img_b64}
+    elif show_result_img:
+        return StreamingResponse(io.BytesIO(encoded_img), media_type='image/jpeg')
     else:
-        return StreamingResponse(io.BytesIO(cv2.imencode('.jpg', canvas)[1].tobytes()), media_type='image/jpeg')
+        return ("Please set one of the following parameters at least: show_result_img, keypoints")
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8000)
