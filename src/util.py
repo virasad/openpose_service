@@ -205,7 +205,7 @@ def handDetect(candidate, subset, oriImg):
             width = min(width1, width2)
             # the max hand box value is 20 pixels
             if width >= 20:
-                detect_result.append([int(x), int(y), int(width), is_left , person_id])
+                detect_result.append([int(x), int(y), int(width)])
 
     '''
     return value: [[x, y, w, True if left hand else False]].
