@@ -6,6 +6,15 @@ __pycache__/
 # C extensions
 *.so
 
+### VisualStudioCode ###
+.vscode/*      # Maybe .vscode/**/* instead - see comments
+.vscode/**/* 
+
+
+### VisualStudioCode Patch ###
+# Ignore all local history of files
+**/.history
+
 # Distribution / packaging
 .Python
 build/
